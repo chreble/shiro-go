@@ -5,12 +5,17 @@ import (
 )
 
 var (
-	ErrSecManagerMissing = errors.New("Security Manager Unavailable")
-	ErrAuth              = errors.New("Error AUthenticating Subject")
-	ErrAccount = errors.New("Error in accessing Account")
-	ErrConcurrentAccess = errors.New("User Already Logged In")
-	ErrWrongCredential = errors.New("Incorrect Credentials Entered")
-	ErrAccountLocked = errors.New("Account is locked")
+	ErrSecManagerMissing  = errors.New("Security Manager Unavailable")
+	ErrAuth               = errors.New("Error AUthenticating Subject")
+	ErrAccount            = errors.New("Error in accessing Account")
+	ErrConcurrentAccess   = errors.New("User Already Logged In")
+	ErrWrongCredential    = errors.New("Incorrect Credentials Entered")
+	ErrAccountLocked      = errors.New("Account is locked")
+	ErrExcessiveAttempts  = errors.New("Authentication tried too many times")
+	ErrCredentialsExpired = errors.New("Credentials Expired")
+	ErrAccountDisabled    = errors.New("Account disabled")
+	ErrAccountInvalid     = errors.New("Account Invalid")
+	ErrUnsupportedToken   = errors.New("Unsupported Token")
 )
 
 type UserToken struct {
@@ -29,9 +34,6 @@ type Subject struct {
 type ShiroError struct {
 }
 
-type Credentials struct {
-}
-
 type Principal struct {
 }
 
@@ -47,25 +49,24 @@ type AuthListener interface {
 	OnSuccess()
 }
 
-type Token struct {
-}
-
 type Permission struct {
 	Perm string
 }
-type RememberMe bool
 
-type SimpleAccount struct {
-	AuthInfo    AuthInfo
-	Realm       string
-	roles       []string
-	permissions []Permission
+type Role struct {
+	Name       string
+	Permission []Permission
 }
 
-type AuthInfo struct {
-	Credentials interface{}
-	CredSalt    []byte
-	Principals  []Principal
+type SimpleAccount struct {
+	AuthInfo AuthInfo
+	Realm    Realm
+	Roles    []Role
+}
+
+type User struct {
+	Name    string
+	Account SimpleAccount
 }
 
 func (s *SimpleAccount) AddPermission() {
@@ -88,10 +89,6 @@ func (s *SimpleAccount) Lock() bool {
 	return false
 }
 
-func (s *SimpleAccount) Salt() []byte {
-	return nil
-}
-
 func (s *SimpleAccount) Permissions() []Permission {
 	return []Permission{}
 }
@@ -104,14 +101,4 @@ func (s *SimpleAccount) SetPermissions(p []Permission) {
 }
 
 func (s *SimpleAccount) SetRoles(r []string) {
-}
-
-func (a *AuthInfo) Merge(info AuthInfo) {
-}
-
-func (u *UserToken) Passwd() []byte {
-	return nil
-}
-
-func (u *UserToken) SetPasswd(passwd []byte) {
 }
