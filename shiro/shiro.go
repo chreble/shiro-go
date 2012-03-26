@@ -16,89 +16,10 @@ var (
 	ErrAccountDisabled    = errors.New("Account disabled")
 	ErrAccountInvalid     = errors.New("Account Invalid")
 	ErrUnsupportedToken   = errors.New("Unsupported Token")
+	ErrUnknownAlgorithm   = errors.New("Unknown Algorithm")
 )
-
-type UserToken struct {
-	Name       string
-	passwd     []byte
-	RememberMe bool
-	Host       string
-}
 
 type SecurityManager struct {
 }
-
-type Subject struct {
-}
-
 type ShiroError struct {
-}
-
-type Principal struct {
-}
-
-type Authenticator interface {
-	Cred()
-	Principals()
-	Authenticate()
-}
-
-type AuthListener interface {
-	OnFailure()
-	OnLogOut()
-	OnSuccess()
-}
-
-type Permission struct {
-	Perm string
-}
-
-type Role struct {
-	Name       string
-	Permission []Permission
-}
-
-type SimpleAccount struct {
-	AuthInfo AuthInfo
-	Realm    Realm
-	Roles    []Role
-}
-
-type User struct {
-	Name    string
-	Account SimpleAccount
-}
-
-func (s *SimpleAccount) AddPermission() {
-}
-
-func (s *SimpleAccount) AddPermissions() {
-}
-
-func (s *SimpleAccount) AddRole() {
-}
-
-func (s *SimpleAccount) AddRoles() {
-}
-
-func (s *SimpleAccount) Creds() Credentials {
-	return Credentials{}
-}
-
-func (s *SimpleAccount) Lock() bool {
-	return false
-}
-
-func (s *SimpleAccount) Permissions() []Permission {
-	return []Permission{}
-}
-
-func (s *SimpleAccount) Expired() bool {
-	return false
-}
-
-func (s *SimpleAccount) SetPermissions(p []Permission) {
-}
-
-func (s *SimpleAccount) SetRoles(r []string) {
 }

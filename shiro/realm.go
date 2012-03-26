@@ -17,17 +17,18 @@ type AuthcRealm struct {
 	CacheName  string
 }
 
-type SimpleAccRealm struct {
+type AccountRealm struct {
 	Roles map[string]Role
 	Users map[string]SimpleAccount
 }
 
-func (s *SimpleAccRealm) AccExist(user string) bool {
+func (s *AccountRealm) AccExist(user string) bool {
 	return false
 }
 
-func (s *SimpleAccRealm) Add(acc SimpleAccount) {
+func (s *AccountRealm) Add(acc SimpleAccount) {
+
 }
 
-func (s *SimpleAccRealm) AddAccount(user, passwd string) {
+func (s *AccountRealm) AddAccount(user, passwd string) {
 }

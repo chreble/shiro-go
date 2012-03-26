@@ -4,27 +4,45 @@ import (
 	"hash"
 )
 
-type HashedPasswd struct {
-	algo    string
-	encType string
-	iter    uint8
+type Principal struct {
 }
+
+type Subject struct {
+}
+
+type Credentials struct {
+}
+
 type AuthInfo struct {
 	Credentials interface{}
 	salt        []byte
 	Principals  []Principal
 }
 
-type Token struct {
+type UserToken struct {
+	Name       string
+	passwd     []byte
+	RememberMe bool
+	Host       string
 }
-type Credentials struct {
+
+type Authenticator interface {
+	Cred()
+	Principals()
+	Authenticate()
+}
+
+type AuthListener interface {
+	OnFailure()
+	OnLogOut()
+	OnSuccess()
 }
 
 func Verify(token UserToken, info AuthInfo) bool {
 	return false
 }
 
-func VerifyHashedPasswd(text string, passwd hash.Hash) bool {
+func VerifySimpleHash(text string, passwd hash.Hash) bool {
 	return false
 }
 
@@ -41,6 +59,10 @@ func StoredPasswd(info AuthInfo) Credentials {
 
 func SubmittedPasswd(token UserToken) Credentials {
 	return Credentials{}
+}
+
+func Principals(token UserToken) []Principal {
+	return nil
 }
 
 func LoginN(token UserToken, aggregate AuthInfo) AuthInfo {
