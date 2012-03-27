@@ -8,18 +8,16 @@ const (
 	WildCard      = "*"
 	TokenDelim    = ":"
 	SubTokenDelim = ","
-	CaseSensitive = false
 )
 
 var (
-	t             tokenSet
-	AllTokens     []tokenSet
-	parts         []string
+	pst           permSubToken
 	subparts      []string
 	lowersubparts []string
+	caseSensitive bool
 )
 
-type tokenSet map[string]bool
+type permSubToken map[string]bool
 
 type Permission string
 
@@ -47,28 +45,42 @@ func NewRole() *Role {
 	return &Role{RoleName: name, permissions: p}
 }
 
-func (p Permission) Implies(req Permission) bool {
-	return false
+func (p Permission) SetCaseSensitive(c bool) {
+	caseSensitive = c
 }
 
-func tokenize(s string) {
-	s = strings.TrimSpace(s)
-	parts = strings.Split(s, TokenDelim)
-	t = make(tokenSet)
-	AllTokens = make([]tokenSet, 0)
-	for _, v := range parts {
-		subparts = strings.Split(v, SubTokenDelim)
-		for _, v2 := range subparts {
-			t[v2] = true
-			AllTokens = append(AllTokens, t)
+func (p Permission) CaseSensitive() bool {
+	return caseSensitive
+}
+
+func (p Permission) Implies(req Permission) bool {
+	available := p.tokenize()
+	requested := req.tokenize()
+	perm := 0
+	for i, v := range requested {
+		if len(available)-1 < i {
+			return true
+		} else {
+			for k1, v1 := range available[i] {
+				//if strings.Contains(k1	, v
+			}
 		}
 	}
 }
-
-func lowerCase() {
-	lowersubparts = make([]string, 0)
-	for _, v := range subparts {
-		lowersubparts = append(lowersubparts, strings.ToLower(v))
+func (p Permission) tokenize() []permSubToken {
+	s := strings.TrimSpace(string(p))
+	if p.CaseSensitive() {
+		s = strings.ToLower(s)
+	}
+	parts := strings.Split(s, TokenDelim)
+	pst = make(permSubToken)
+	permToken := make([]permSubToken, 0)
+	for _, v := range parts {
+		subparts = strings.Split(v, SubTokenDelim)
+		for _, v2 := range subparts {
+			pst[v2] = true
+			permToken = append(permToken, pst)
+		}
 	}
 }
 
