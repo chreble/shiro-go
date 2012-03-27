@@ -19,14 +19,14 @@ type AuthcRealm struct {
 
 type AccountRealm struct {
 	Roles map[string]Role
-	Users map[string]SimpleAccount
+	Users map[string]Account
 }
 
 func (s *AccountRealm) AccExist(user string) bool {
 	return false
 }
 
-func (s *AccountRealm) Add(acc SimpleAccount) {
+func (s *AccountRealm) Add(acc Account) {
 
 }
 

@@ -87,6 +87,6 @@ func (u *UserToken) Passwd() []byte {
 func (u *UserToken) SetPasswd(passwd []byte) {
 }
 
-func (s *SimpleAccount) Salt() []byte {
+func (s *Account) Salt() []byte {
 	return nil
 }
