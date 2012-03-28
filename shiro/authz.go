@@ -56,17 +56,26 @@ func (p Permission) CaseSensitive() bool {
 func (p Permission) Implies(req Permission) bool {
 	available := p.tokenize()
 	requested := req.tokenize()
-	perm := 0
 	for i, v := range requested {
 		if len(available)-1 < i {
 			return true
 		} else {
-			for k1, v1 := range available[i] {
-				//if strings.Contains(k1	, v
+			m1 := available[i]
+			for k1, _ := range v {
+				if _, ok := m1[k1]; !ok {
+					return false
+				}
 			}
 		}
 	}
+	for _, v := range available {
+		if _, ok := v[WildCard]; !ok {
+			return false
+		}
+	}
+	return true
 }
+
 func (p Permission) tokenize() []permSubToken {
 	s := strings.TrimSpace(string(p))
 	if p.CaseSensitive() {
@@ -82,6 +91,7 @@ func (p Permission) tokenize() []permSubToken {
 			permToken = append(permToken, pst)
 		}
 	}
+	return permToken
 }
 
 func (s *Account) AddPermission() {
