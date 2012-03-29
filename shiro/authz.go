@@ -11,8 +11,6 @@ const (
 )
 
 var (
-	pst           permSubToken
-	subparts      []string
 	lowersubparts []string
 	caseSensitive bool
 )
@@ -76,20 +74,21 @@ func (p Permission) Implies(req Permission) bool {
 	return true
 }
 
+// This method will tokenize the permission string into slice of subtoken maps
 func (p Permission) tokenize() []permSubToken {
 	s := strings.TrimSpace(string(p))
 	if p.CaseSensitive() {
 		s = strings.ToLower(s)
 	}
 	parts := strings.Split(s, TokenDelim)
-	pst = make(permSubToken)
 	permToken := make([]permSubToken, 0)
 	for _, v := range parts {
-		subparts = strings.Split(v, SubTokenDelim)
+		pst := make(permSubToken)
+		subparts := strings.Split(v, SubTokenDelim)
 		for _, v2 := range subparts {
 			pst[v2] = true
-			permToken = append(permToken, pst)
 		}
+		permToken = append(permToken, pst)
 	}
 	return permToken
 }

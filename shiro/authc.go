@@ -4,10 +4,19 @@ import (
 	"hash"
 )
 
+type Session struct {
+}
+
 type Principal struct {
 }
 
 type Subject struct {
+	authcd     bool
+	host       string
+	principals []string
+	secMan     SecurityManager
+	session    Session
+	newSession bool
 }
 
 type Credentials struct {
