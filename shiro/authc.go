@@ -20,19 +20,21 @@ type Principal struct {
 }
 
 type Subject struct {
-	authcd     bool
-	host       string
-	principals []string
-	secMan     SecurityManager
-	session    Session
-	newSession bool
+	permitted     bool
+	authenticated bool
+	remembered    bool
+	host          string
+	principals    []Principal
+	secMan        SecurityManager
+	session       Session
+	newSession    bool
 }
 
 type Credentials struct {
 }
 
 type AuthInfo struct {
-	Credentials interface{}
+	Credentials Credentials
 	salt        []byte
 	Principals  []Principal
 }
@@ -107,4 +109,12 @@ func (u *UserToken) SetPasswd(passwd []byte) {
 
 func (s *Account) Salt() []byte {
 	return nil
+}
+
+func (s *Subject) Principals() []Principal {
+	return s.principals
+}
+
+func (s *Subject) Permitted() bool {
+	return false
 }

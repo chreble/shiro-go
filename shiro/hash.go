@@ -2,6 +2,7 @@ package shiro
 
 import (
 	"crypto/md5"
+	"crypto/rand"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
@@ -94,4 +95,15 @@ func (h HashedValue) Base64() HashedValue {
 	dst := make([]byte, enc.EncodedLen(len(h)))
 	enc.Encode(dst, h)
 	return dst
+}
+
+func UUID() string {
+	b := make([]byte, 16)
+	_, err := io.ReadFull(rand.Reader, b)
+	if err != nil {
+		fmt.Println("Error occured", err)
+	}
+	b[6] = (b[6] & 0x0F) | 0x40
+	b[8] = (b[8] &^ 0x40) | 0x80
+	return fmt.Sprintf("%x", b)
 }

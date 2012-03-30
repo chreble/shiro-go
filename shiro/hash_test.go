@@ -27,3 +27,12 @@ func TestHashedValue(t *testing.T) {
 		t.Fatal("Expected %s Got %s", out, val)
 	}
 }
+
+func TestUUID(t *testing.T) {
+	val := UUID()
+	if val != "" {
+		t.Log("UUID generated ", val)
+	} else {
+		t.Fatal("No UUID generated")
+	}
+}
