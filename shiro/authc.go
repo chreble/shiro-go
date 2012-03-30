@@ -2,9 +2,18 @@ package shiro
 
 import (
 	"hash"
+	"time"
 )
 
 type Session struct {
+	id         string
+	start      time.Time
+	stop       time.Time
+	lastAccess time.Time
+	timeout    time.Duration
+	expired    bool
+	host       string
+	attributes map[string]interface{}
 }
 
 type Principal struct {
