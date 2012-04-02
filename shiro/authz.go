@@ -52,8 +52,16 @@ func (p Permission) CaseSensitive() bool {
 }
 
 func (p Permission) Implies(req Permission) bool {
-	available := p.tokenize()
-	requested := req.tokenize()
+	available, err := p.tokenize()
+	if err != nil {
+		Log.Println(err)
+		return false
+	}
+	requested, err := req.tokenize()
+	if err != nil {
+		Log.Println(err)
+		return false
+	}
 	for i, v := range requested {
 		if len(available)-1 < i {
 			return true
@@ -75,8 +83,11 @@ func (p Permission) Implies(req Permission) bool {
 }
 
 // This method will tokenize the permission string into slice of subtoken maps
-func (p Permission) tokenize() []permSubToken {
+func (p Permission) tokenize() ([]permSubToken, error) {
 	s := strings.TrimSpace(string(p))
+	if len(s) == 0 {
+		return nil, ErrEmptyPermission
+	}
 	if p.CaseSensitive() {
 		s = strings.ToLower(s)
 	}
@@ -90,7 +101,7 @@ func (p Permission) tokenize() []permSubToken {
 		}
 		permToken = append(permToken, pst)
 	}
-	return permToken
+	return permToken, nil
 }
 
 func (s *Account) AddPermission() {

@@ -16,19 +16,7 @@ type Session struct {
 	attributes map[string]interface{}
 }
 
-type Principal struct {
-}
 
-type Subject struct {
-	permitted     bool
-	authenticated bool
-	remembered    bool
-	host          string
-	principals    []Principal
-	secMan        SecurityManager
-	session       Session
-	newSession    bool
-}
 
 type Credentials struct {
 }
@@ -85,18 +73,6 @@ func Principals(token UserToken) []Principal {
 	return nil
 }
 
-func LoginN(token UserToken, aggregate AuthInfo) AuthInfo {
-	return AuthInfo{}
-}
-
-func Login(token UserToken, realm Realm, realmInfo, aggregate AuthInfo) AuthInfo {
-	return AuthInfo{}
-}
-
-func BeforeLoginN(realms []Realm, token UserToken) AuthInfo {
-	return AuthInfo{}
-}
-
 func (a *AuthInfo) Merge(info AuthInfo) {
 }
 
@@ -111,10 +87,3 @@ func (s *Account) Salt() []byte {
 	return nil
 }
 
-func (s *Subject) Principals() []Principal {
-	return s.principals
-}
-
-func (s *Subject) Permitted() bool {
-	return false
-}
